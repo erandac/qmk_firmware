@@ -26,11 +26,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
- * | MO(2)  |   1  |   2  |   3  |   4  |   5  |      |           |OSL(2)|   6  |   7  |   8  |   9  |   0  |   -    |
+ * | TT(2)  |   1  |   2  |   3  |   4  |   5  |      |           |OSL(2)|   6  |   7  |   8  |   9  |   0  |   -    |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
  * | Tab    |   Q  |   W  |   E  |   R  |   T  | TG1  |           |  =   |   Y  |   U  |   I  |   O  |   P  |   \    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * | MO(1)  |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |; / L1|' / Cmd |
+ * | TT(1)  |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |; / L1|' / Cmd |
  * |--------+------+------+------+------+------| TG2  |           |  $   |------+------+------+------+------+--------|
  * | LShift |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   ,  |   .  |//Ctrl| RShift |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -48,9 +48,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Otherwise, it needs KC_*
 [BASE] = LAYOUT_ergodox(  // layer 0 : default
         // left hand
-        MO(MDIA),       KC_1,             KC_2,     KC_3,     KC_4,   KC_5,   KC_TRNS,
+        TT(MDIA),       KC_1,             KC_2,     KC_3,     KC_4,   KC_5,   KC_TRNS,
         KC_TAB,         KC_Q,             KC_W,     KC_E,     KC_R,   KC_T,   TG(SYMB),
-        MO(SYMB),       KC_A,             KC_S,     KC_D,     KC_F,   KC_G,
+        TT(SYMB),       KC_A,             KC_S,     KC_D,     KC_F,   KC_G,
         KC_LSFT,        KC_Z,             KC_X,     KC_C,     KC_V,   KC_B,   TG(MDIA),
         CTL_T(KC_GRV),  ALT_T(KC_QUOT),   KC_LGUI,  KC_LEFT,  KC_RGHT,
 
@@ -72,11 +72,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 1: Symbol Layer
  *
  * ,---------------------------------------------------.           ,--------------------------------------------------.
- * |    n    |  n   |  n   |  n   |   n  |   n  |  n   |           |   n  |   n  | n    |   n  |  n   |  n   |   n    |
+ * | TO(0)   |  n   |  n   |  n   |   n  |   n  |  n   |           |   n  |   n  | n    |   n  |  n   |  n   |   n    |
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
  * |    n    |  n   |  n   | MsUp |   n  |   n  |TG(1) |           |  n   |   n  |   n  |   n  |  n   |  n   |   n    |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |   lock  |  n   |MsLeft|MsDown|MsRigt|   n  |------|           |------|VI_CWH|VI_CWJ|VI_CWk|VI_CWL|  n   |   n    |
+ * |  lock   |  n   |MsLeft|MsDown|MsRigt|   n  |------|           |------|VI_CWH|VI_CWJ|VI_CWk|VI_CWL|  n   |   n    |
  * |---------+------+------+------+------+------|  n   |           |      |------+------+------+------+------+--------|
  * |    n    |   n  |  n   | MwUP | MwDU |   n  |      |           |  n   |   n  |   n  |   n  |  n   |  n   |   n    |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -93,11 +93,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // SYMBOLS
 [SYMB] = LAYOUT_ergodox(
        // left hand
-       KC_NO,     KC_NO,      KC_NO,        KC_NO,       KC_NO,       KC_NO,       KC_NO,  
+       TO(BASE),     KC_NO,      KC_NO,        KC_NO,       KC_NO,       KC_NO,       KC_NO,  
        KC_NO,     KC_NO,      KC_NO,        KC_MS_U,     KC_NO,       KC_NO,       TG(SYMB),  
        KC_TRNS,   KC_NO,      KC_MS_L,      KC_MS_D,     KC_MS_R,     KC_NO,  
        KC_NO,     KC_NO,      KC_NO,        KC_WH_U,     KC_WH_D,     KC_NO,       KC_NO,  
-       RESET,     KC_NO,      KC_NO,        KC_NO,       KC_NO,  
+       RESET,     KC_NO,      KC_NO,     KC_NO,       KC_NO,  
                                                                                KC_NO,    KC_NO,  
                                                                                          KC_NO,  
                                                                  KC_BTN1,      KC_BTN2,  KC_NO,  
@@ -116,12 +116,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *
 
  * ,---------------------------------------------------.           ,--------------------------------------------------.
- * |   lock  |  F1  |  F2  |  F3  |  F4  |  F5  |      |           |      |  F6  |  F7  |  F8  |  F9  |  F10 |   F11  |
+ * |  TO(0)  |  F1  |  F2  |  F3  |  F4  |  F5  |      |           |      |  F6  |  F7  |  F8  |  F9  |  F10 |   F11  |
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
  * |         |   !  |   @  |   {  |   }  |   |  |      |           |  n   |   Up |   7  |   8  |   9  |   *  |   F12  |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |         |   #  |   $  |   (  |   )  |   `  |------|           |------| Down |   4  |   5  |   6  |   +  |        |
- * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * |---------+------+------+------+------+------|TG(2) |           |      |------+------+------+------+------+--------|
  * |         |   %  |   ^  |   [  |   ]  |   ~  |      |           |      |   &  |   1  |   2  |   3  |   \  |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |       |      |      |      |      |                                       |      |    . |   0  |   =  |      |
@@ -136,10 +136,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 // MEDIA AND MOUSE
 [MDIA] = LAYOUT_ergodox(
-       KC_TRNS,   KC_F1,    KC_F2,    KC_F3,     KC_F4,     KC_F5,    KC_TRNS,
+       TO(BASE),  KC_F1,    KC_F2,    KC_F3,     KC_F4,     KC_F5,    KC_TRNS,
        KC_TRNS,   KC_EXLM,  KC_AT,    KC_LCBR,   KC_RCBR,   KC_PIPE,  KC_TRNS,
        KC_TRNS,   KC_HASH,  KC_DLR,   KC_LPRN,   KC_RPRN,   KC_GRV,
-       KC_TRNS,   KC_PERC,  KC_CIRC,  KC_LBRC,   KC_RBRC,   KC_TILD,  TG(MDIA),
+       KC_TRNS,   KC_PERC,  KC_CIRC,  KC_LBRC,   KC_RBRC,   KC_TILD,  KC_TRNS,
        KC_TRNS,   KC_TRNS,  KC_TRNS,  KC_TRNS,   KC_TRNS,
                                        RGB_MOD,KC_TRNS,
                                                KC_TRNS,
