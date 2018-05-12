@@ -28,10 +28,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * | TT(2)  |   1  |   2  |   3  |   4  |   5  |      |           |OSL(2)|   6  |   7  |   8  |   9  |   0  |   -    |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * | Tab    |   Q  |   W  |   E  |   R  |   T  | TG1  |           |  =   |   Y  |   U  |   I  |   O  |   P  |   \    |
+ * | Tab    |   Q  |   W  |   E  |   R  |   T  | Rclk |           |  =   |   Y  |   U  |   I  |   O  |   P  |   \    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * | TT(1)  |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |; / L1|' / Cmd |
- * |--------+------+------+------+------+------| TG2  |           |  $   |------+------+------+------+------+--------|
+ * |--------+------+------+------+------+------| Lclk |           |  $   |------+------+------+------+------+--------|
  * | LShift |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   ,  |   .  |//Ctrl| RShift |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |Grv/Ct|'"/Al | CMD  | Left | Right|                                       |  Up  | Down |   [  |   ]  | ~L2  |
@@ -49,9 +49,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [BASE] = LAYOUT_ergodox(  // layer 0 : default
         // left hand
         TT(MDIA),       KC_1,             KC_2,     KC_3,     KC_4,   KC_5,   KC_TRNS,
-        KC_TAB,         KC_Q,             KC_W,     KC_E,     KC_R,   KC_T,   TG(SYMB),
+        KC_TAB,         KC_Q,             KC_W,     KC_E,     KC_R,   KC_T,   KC_BTN2,
         TT(SYMB),       KC_A,             KC_S,     KC_D,     KC_F,   KC_G,
-        KC_LSFT,        KC_Z,             KC_X,     KC_C,     KC_V,   KC_B,   TG(MDIA),
+        KC_LSFT,        KC_Z,             KC_X,     KC_C,     KC_V,   KC_B,   KC_BTN1,
         CTL_T(KC_GRV),  ALT_T(KC_QUOT),   KC_LGUI,  KC_LEFT,  KC_RGHT,
 
                                                   VIM_EM,     VIM_S_ALL,
