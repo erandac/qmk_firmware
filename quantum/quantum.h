@@ -44,10 +44,6 @@
     #endif
 #endif
 
-#ifdef SPLIT_KEYBOARD
-    #include "split_flags.h"
-#endif
-
 #ifdef RGB_MATRIX_ENABLE
     #include "rgb_matrix.h"
 #endif
@@ -139,6 +135,10 @@ extern uint32_t default_layer_state;
     #include "hd44780.h"
 #endif
 
+#ifdef HAPTIC_ENABLE
+    #include "haptic.h"
+#endif
+
 //Function substitutions to ease GPIO manipulation
 #ifdef __AVR__
     #define PIN_ADDRESS(p, offset) _SFR_IO8(ADDRESS_BASE + (p >> PORT_SHIFTER) + offset)
@@ -224,6 +224,8 @@ void matrix_init_kb(void);
 void matrix_scan_kb(void);
 void matrix_init_user(void);
 void matrix_scan_user(void);
+uint16_t get_record_keycode(keyrecord_t *record);
+uint16_t get_event_keycode(keyevent_t event);
 bool process_action_kb(keyrecord_t *record);
 bool process_record_kb(uint16_t keycode, keyrecord_t *record);
 bool process_record_user(uint16_t keycode, keyrecord_t *record);

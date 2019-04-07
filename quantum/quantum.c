@@ -47,6 +47,13 @@ extern backlight_config_t backlight_config;
 #include "process_midi.h"
 #endif
 
+#ifdef VELOCIKEY_ENABLE
+#include "velocikey.h"
+#endif
+
+#ifdef HAPTIC_ENABLE
+    #include "haptic.h"
+#endif
 
 #ifdef ENCODER_ENABLE
 #include "encoder.h"
@@ -179,6 +186,9 @@ void reset_keyboard(void) {
   shutdown_user();
   wait_ms(250);
 #endif
+#ifdef HAPTIC_ENABLE
+  haptic_shutdown();
+#endif
 // this is also done later in bootloader.c - not sure if it's neccesary here
 #ifdef BOOTLOADER_CATERINA
   *(uint16_t *)0x0800 = 0x7777; // these two are a-star-specific
@@ -215,27 +225,39 @@ static uint16_t scs_timer[2] = {0, 0};
  */
 static bool grave_esc_was_shifted = false;
 
-bool process_record_quantum(keyrecord_t *record) {
+/* Convert record into usable keycode via the contained event. */
+uint16_t get_record_keycode(keyrecord_t *record) {
+  return get_event_keycode(record->event);
+}
 
-  /* This gets the keycode from the key pressed */
-  keypos_t key = record->event.key;
-  uint16_t keycode;
+
+/* Convert event into usable keycode. Checks the layer cache to ensure that it
+ * retains the correct keycode after a layer change, if the key is still pressed.
+ */
+uint16_t get_event_keycode(keyevent_t event) {
 
   #if !defined(NO_ACTION_LAYER) && !defined(STRICT_LAYER_RELEASE)
     /* TODO: Use store_or_get_action() or a similar function. */
     if (!disable_action_cache) {
       uint8_t layer;
 
-      if (record->event.pressed) {
-        layer = layer_switch_get_layer(key);
-        update_source_layers_cache(key, layer);
+      if (event.pressed) {
+        layer = layer_switch_get_layer(event.key);
+        update_source_layers_cache(event.key, layer);
       } else {
-        layer = read_source_layers_cache(key);
+        layer = read_source_layers_cache(event.key);
       }
-      keycode = keymap_key_to_keycode(layer, key);
+      return keymap_key_to_keycode(layer, event.key);
     } else
   #endif
-    keycode = keymap_key_to_keycode(layer_switch_get_layer(key), key);
+    return keymap_key_to_keycode(layer_switch_get_layer(event.key), event.key);
+}
+
+/* Main keycode processing function. Hands off handling to other functions,
+ * then processes internal Quantum keycodes, then processes ACTIONs.
+ */
+bool process_record_quantum(keyrecord_t *record) {
+    uint16_t keycode = get_record_keycode(record);
 
     // This is how you use actions here
     // if (keycode == KC_LEAD) {
@@ -244,6 +266,10 @@ bool process_record_quantum(keyrecord_t *record) {
     //   process_action(record, action);
     //   return false;
     // }
+
+  #ifdef VELOCIKEY_ENABLE
+    if (velocikey_enabled() && record->event.pressed) { velocikey_accelerate(); }
+  #endif
 
   #ifdef TAP_DANCE_ENABLE
     preprocess_tap_dance(keycode, record);
@@ -257,10 +283,13 @@ bool process_record_quantum(keyrecord_t *record) {
   #if defined(AUDIO_ENABLE) && defined(AUDIO_CLICKY)
     process_clicky(keycode, record) &&
   #endif //AUDIO_CLICKY
-    process_record_kb(keycode, record) &&
-  #if defined(RGB_MATRIX_ENABLE) && defined(RGB_MATRIX_KEYPRESSES)
+  #ifdef HAPTIC_ENABLE
+    process_haptic(keycode, record) &&
+  #endif //HAPTIC_ENABLE
+  #if defined(RGB_MATRIX_ENABLE) && defined(RGB_MATRIX_KEYREACTIVE_ENABLED)
     process_rgb_matrix(keycode, record) &&
   #endif
+    process_record_kb(keycode, record) &&
   #if defined(MIDI_ENABLE) && defined(MIDI_ADVANCED)
     process_midi(keycode, record) &&
   #endif
@@ -343,9 +372,6 @@ bool process_record_quantum(keyrecord_t *record) {
     if (!record->event.pressed) {
     #endif
       rgblight_toggle();
-      #ifdef SPLIT_KEYBOARD
-          RGB_DIRTY = true;
-      #endif
     }
     return false;
   case RGB_MODE_FORWARD:
@@ -357,9 +383,6 @@ bool process_record_quantum(keyrecord_t *record) {
       else {
         rgblight_step();
       }
-      #ifdef SPLIT_KEYBOARD
-          RGB_DIRTY = true;
-      #endif
     }
     return false;
   case RGB_MODE_REVERSE:
@@ -371,9 +394,6 @@ bool process_record_quantum(keyrecord_t *record) {
       else {
         rgblight_step_reverse();
       }
-      #ifdef SPLIT_KEYBOARD
-          RGB_DIRTY = true;
-      #endif
     }
     return false;
   case RGB_HUI:
@@ -384,9 +404,6 @@ bool process_record_quantum(keyrecord_t *record) {
     if (!record->event.pressed) {
     #endif
       rgblight_increase_hue();
-      #ifdef SPLIT_KEYBOARD
-          RGB_DIRTY = true;
-      #endif
     }
     return false;
   case RGB_HUD:
@@ -397,9 +414,6 @@ bool process_record_quantum(keyrecord_t *record) {
     if (!record->event.pressed) {
     #endif
       rgblight_decrease_hue();
-      #ifdef SPLIT_KEYBOARD
-          RGB_DIRTY = true;
-      #endif
     }
     return false;
   case RGB_SAI:
@@ -410,9 +424,6 @@ bool process_record_quantum(keyrecord_t *record) {
     if (!record->event.pressed) {
     #endif
       rgblight_increase_sat();
-      #ifdef SPLIT_KEYBOARD
-          RGB_DIRTY = true;
-      #endif
     }
     return false;
   case RGB_SAD:
@@ -423,9 +434,6 @@ bool process_record_quantum(keyrecord_t *record) {
     if (!record->event.pressed) {
     #endif
       rgblight_decrease_sat();
-      #ifdef SPLIT_KEYBOARD
-          RGB_DIRTY = true;
-      #endif
     }
     return false;
   case RGB_VAI:
@@ -436,9 +444,6 @@ bool process_record_quantum(keyrecord_t *record) {
     if (!record->event.pressed) {
     #endif
       rgblight_increase_val();
-      #ifdef SPLIT_KEYBOARD
-          RGB_DIRTY = true;
-      #endif
     }
     return false;
   case RGB_VAD:
@@ -449,9 +454,6 @@ bool process_record_quantum(keyrecord_t *record) {
     if (!record->event.pressed) {
     #endif
       rgblight_decrease_val();
-      #ifdef SPLIT_KEYBOARD
-          RGB_DIRTY = true;
-      #endif
     }
     return false;
   case RGB_SPI:
@@ -467,9 +469,6 @@ bool process_record_quantum(keyrecord_t *record) {
   case RGB_MODE_PLAIN:
     if (record->event.pressed) {
       rgblight_mode(RGBLIGHT_MODE_STATIC_LIGHT);
-      #ifdef SPLIT_KEYBOARD
-          RGB_DIRTY = true;
-      #endif
     }
     return false;
   case RGB_MODE_BREATHE:
@@ -559,7 +558,14 @@ bool process_record_quantum(keyrecord_t *record) {
   #endif
     return false;
   #endif // defined(RGBLIGHT_ENABLE) || defined(RGB_MATRIX_ENABLE)
-    #ifdef PROTOCOL_LUFA
+  #ifdef VELOCIKEY_ENABLE
+    case VLK_TOG:
+      if (record->event.pressed) {
+        velocikey_toggle();
+      }
+      return false;
+  #endif
+  #ifdef PROTOCOL_LUFA
     case OUT_AUTO:
       if (record->event.pressed) {
         set_output(OUTPUT_AUTO);
@@ -1049,14 +1055,11 @@ void matrix_init_quantum() {
   #if defined(UNICODE_ENABLE) || defined(UNICODEMAP_ENABLE) || defined(UCIS_ENABLE)
     unicode_input_mode_init();
   #endif
+  #ifdef HAPTIC_ENABLE
+    haptic_init();
+  #endif
   matrix_init_kb();
 }
-
-uint8_t rgb_matrix_task_counter = 0;
-
-#ifndef RGB_MATRIX_SKIP_FRAMES
-  #define RGB_MATRIX_SKIP_FRAMES 1
-#endif
 
 void matrix_scan_quantum() {
   #if defined(AUDIO_ENABLE) && !defined(NO_MUSIC_MODE)
@@ -1081,14 +1084,14 @@ void matrix_scan_quantum() {
 
   #ifdef RGB_MATRIX_ENABLE
     rgb_matrix_task();
-    if (rgb_matrix_task_counter == 0) {
-      rgb_matrix_update_pwm_buffers();
-    }
-    rgb_matrix_task_counter = ((rgb_matrix_task_counter + 1) % (RGB_MATRIX_SKIP_FRAMES + 1));
   #endif
 
   #ifdef ENCODER_ENABLE
     encoder_read();
+  #endif
+
+  #ifdef HAPTIC_ENABLE
+    haptic_task();
   #endif
 
   matrix_scan_kb();
