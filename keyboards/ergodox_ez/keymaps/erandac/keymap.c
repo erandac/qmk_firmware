@@ -39,9 +39,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        ,-------------.       ,---------------.
  *                                        | ViEM |S_ALL |       | Alt  |  Tab   |
  *                                 ,------|------|------|       |------+--------+------.
- *                                 |      |      | COPY |       | PgUp |        |      |
+ *                                 |      |      | COPY |       | COPY |        |      |
  *                                 | Space|Backsp|------|       |------|  Esc   |Enter |
- *                                 |      |ace   | PSTE |       | PgDn |        |      |
+ *                                 |      |ace   | PSTE |       | PSTE |        |      |
  *                                 `--------------------'       `----------------------'
  */
 // If it accepts an argument (i.e, is a function), it doesn't need KC_.
@@ -49,14 +49,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [BASE] = LAYOUT_ergodox(  // layer 0 : default
         // left hand
         TT(MDIA),       KC_1,             KC_2,     KC_3,     KC_4,   KC_5,   TT(SYMB),
-        KC_TAB,         KC_Q,             KC_W,     KC_E,     KC_R,   KC_T,   KC_BTN2,
+        KC_TAB,         KC_Q,             KC_W,     KC_E,     KC_R,   KC_T,   KC_NO,
         KC_ESC,         KC_A,             KC_S,     KC_D,     KC_F,   KC_G,
-        KC_LSFT,        KC_Z,             KC_X,     KC_C,     KC_V,   KC_B,   KC_BTN1,
+        KC_LSFT,        KC_Z,             KC_X,     KC_C,     KC_V,   KC_B,   KC_NO,
         CTL_T(KC_GRV),  ALT_T(KC_QUOT),   KC_LGUI,  KC_LEFT,  KC_RGHT,
 
                                                   VIM_EM,     VIM_S_ALL,
-                                                              COPY,
-                                        KC_SPC,   KC_BSPC,    PSTE,
+                                                              KC_BTN2,
+                                        KC_SPC,   KC_BSPC,    KC_BTN1,
 
 
         // right hand
@@ -66,8 +66,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              KC_DLR,      KC_N,   KC_M,  KC_COMM,   KC_DOT,   KC_SLSH,            KC_RSFT,
                                   KC_UP, KC_DOWN,   KC_LBRC,  KC_RBRC,            KC_FN1,
              KC_LALT,  GUI_T(KC_TAB),
-             KC_PGUP,
-             KC_PGDN,  KC_ESC,   KC_ENT
+             COPY,
+             PSTE,  KC_ESC,   KC_ENT
     ),
 /* Keymap 1: Symbol Layer
  *
