@@ -74,43 +74,43 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,---------------------------------------------------.           ,--------------------------------------------------.
  * | TO(0)   |  n   |  n   |  n   |   n  |   n  |  n   |           |   n  |   n  | n    |   n  |  n   |  n   |   n    |
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
- * |    n    |  n   |  n   | MsUp |   n  |   n  |TG(1) |           |  n   |   n  |   n  |   n  |  n   |  n   |   n    |
+ * |    n    |  n   |  n   |  n   |   n  |   n  |  tr  |           |  n   |   n  |   n  |   n  |  n   |  n   |   n    |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |  lock   |  n   |MsLeft|MsDown|MsRigt|   n  |------|           |------|VI_CWH|VI_CWJ|VI_CWk|VI_CWL|  n   |   n    |
- * |---------+------+------+------+------+------|  n   |           |      |------+------+------+------+------+--------|
- * |    n    |   n  |  n   | MwUP | MwDU |   n  |      |           |  n   |   n  |   n  |   n  |  n   |  n   |   n    |
+ * |  lock   |  n   |  n   |  n   |   n  |   n  |------|           |------|MsLeft|MsDown| MsUp |MsRigt|  n   |   n    |
+ * |---------+------+------+------+------+------|  tr  |           |      |------+------+------+------+------+--------|
+ * |    n    |   n  |  n   |  n   |   n  |   n  |      |           |  n   |   n  |   n  |   n  |  n   |  n   |   n    |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | FLASH |   n  |  n   |  n   |  n   |                                       |  Ma0 |   n  |  n   |  n   |   n  |
+ *   | FLASH |   n  |  n   |  n   |   n  |                                       | MwUP |MwDown|  n   |  n   |   n  |
  *   `-----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        |  n   |  n   |       |   n  |  n   |
  *                                 ,------|------|------|       |------+------+------.
- *                                 |Lclk  | Rclk |  n   |       |   n  | Ma2  | Ma1  |
- *                                 |      |      |------|       |------|      |      |
+ *                                 |      |      |  n   |       |   n  |      |      |
+ *                                 |  Ma1 | Ma2  |------|       |------|TO(0) | Lclk |
  *                                 |      |      |  n   |       |   n  |      |      |
  *                                 `--------------------'       `--------------------'
  */
 // SYMBOLS
 [SYMB] = LAYOUT_ergodox(
        // left hand
-       TO(BASE),     KC_NO,      KC_NO,        KC_NO,       KC_NO,       KC_NO,       KC_NO,
-       KC_NO,     KC_NO,      KC_NO,        KC_MS_U,     KC_NO,       KC_NO,       TG(SYMB),
-       KC_TRNS,   KC_NO,      KC_MS_L,      KC_MS_D,     KC_MS_R,     KC_NO,
-       KC_NO,     KC_NO,      KC_NO,        KC_WH_U,     KC_WH_D,     KC_NO,       KC_NO,
-       RESET,     KC_NO,      KC_NO,     KC_NO,       KC_NO,
+       TO(BASE),     KC_NO,      KC_NO,        KC_NO,     KC_NO,     KC_NO,       KC_NO,
+       KC_NO,        KC_NO,      KC_NO,        KC_NO,     KC_NO,     KC_NO,       KC_TRNS,
+       KC_TRNS,      KC_NO,      KC_NO,        KC_NO,     KC_NO,     KC_NO,
+       KC_NO,        KC_NO,      KC_NO,        KC_NO,     KC_NO,     KC_NO,       KC_TRNS,
+       RESET,        KC_NO,      KC_NO,        KC_NO,     KC_NO,
                                                                                KC_NO,    KC_NO,
                                                                                          KC_NO,
-                                                                 KC_BTN1,      KC_BTN2,  KC_NO,
+                                                                 KC_ACL1,      KC_ACL2,  KC_NO,
 
        // right hand
        KC_NO,     KC_NO,      KC_NO,        KC_NO,        KC_NO,       KC_NO,       KC_NO,
        KC_NO,     KC_NO,      KC_NO,        KC_NO,        KC_NO,       KC_NO,       KC_NO,
-                  VIM_CWH,    VIM_CWJ,      VIM_CWK,      VIM_CWL,     KC_NO,       KC_NO,
+                  KC_MS_L,    KC_MS_D,      KC_MS_U,      KC_MS_R,     KC_NO,       KC_NO,
        KC_NO,     KC_NO,      KC_NO,        KC_NO,        KC_NO,       KC_NO,       KC_NO,
-                              KC_ACL0,      KC_NO,        KC_NO,       KC_NO,       KC_NO,
+                              KC_WH_U,      KC_WH_D,        KC_NO,       KC_NO,       KC_NO,
        KC_NO,    KC_NO,
        KC_NO,
-       KC_NO,    KC_ACL2,  KC_ACL1
+       KC_NO,    TO(BASE),    KC_BTN1
 ),
 /* Keymap 2: Media and mouse keys
  *
